@@ -3988,8 +3988,8 @@ textarea.form-control-lg {
 .navbar-brand {
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
-  margin-right: 1rem;
-  font-size: 1.25rem;
+  margin-right: 2rem;
+  font-size: 1.5rem;
   white-space: nowrap;
 }
 .navbar-nav {
@@ -11126,6 +11126,7 @@ header.masthead {
   background-color: #6c757d;
   background-size: cover;
   background-attachment: scroll;
+  height: 500px;
 }
 header.masthead:before {
   content: "";
@@ -11245,4 +11246,7 @@ header.masthead .site-heading .h1 {
   .post-preview > a > .post-title {
     font-size: 2.25rem;
   }
+}
+.sub_log {
+    padding: 0.6rem 1.7rem;
 }

@@ -16,11 +16,11 @@
         <link href="{{ url_for('static', filename='css/styles.css') }}"
               rel="stylesheet"
               type="text/css" />
-        {% if title %}
-            <title>Flask-блог - {{ title }}</title>
-        {% else %}
-            <title>Привет</title>
-        {% endif %}
+
+        {% block title %}
+            <title>Регистрация</title>
+        {% endblock title %}
+
     </head>
     <body>
         <!-- Navigation-->
@@ -32,13 +32,13 @@
         <!-- Page Header-->
 
         {% block header %}
-            {% include 'includes/header.html' %}
+            {% include 'includes/header_reg.html' %}
         {% endblock header %}
 
         <!-- Main Content-->
 
         {% block content %}
-            {% include 'includes/content.html' %}
+            {% include 'includes/content_reg.html' %}
         {% endblock content %}
 
         <!-- Footer-->

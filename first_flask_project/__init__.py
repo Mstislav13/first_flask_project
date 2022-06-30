@@ -23,7 +23,9 @@ def create_app():
 
     from first_flask_project.main.routes import main
     from first_flask_project.users.routes import users
+    from first_flask_project.posts.routes import posts
     app.register_blueprint(main)
     app.register_blueprint(users)
+    app.register_blueprint(posts)
 
     return app

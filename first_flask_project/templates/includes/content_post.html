@@ -1,0 +1,36 @@
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <h4 class="section-heading">{{ post.title }}</h4>
+                <small>
+                    Автор статьи:
+                    <a href="{{ url_for('users.user_posts', username=post.author.username) }}">
+                        {{ post.author.username }}
+                    </a>
+                </small>
+                <br>
+                <small>
+                    Дата публикации: {{ post.created.strftime('%d %B %Y %I:%M %p') }}
+                </small>
+                <p>{{ post.content }}</p>
+
+                <div class="card-footer"
+                     style="font-size: 20px; display: flex;">
+                    {% if post.author == current_user %}
+                        <a class="btn btn-success btn-sm mt-1 mb-1"
+                           href="{{url_for('posts.update_post', post_id=post.id) }}">
+                            Редактировать
+                        </a>
+                        <form action="{{ url_for('posts.delete_post', post_id=post.id) }}"
+                              method="POST" style="margin-left: 430px;">
+                        <input class="btn btn-danger btn-sm mt-1 mb-1"
+                               type="submit" value="Удалить">
+                        </form>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</article>

@@ -1,0 +1,62 @@
+<h1 class="mb-3" style="text-align: center;">
+    Посты опубликованные пользователем ({{ posts.total }} шт.):
+</h1>
+{% for post in posts.items %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <!-- Post preview-->
+                <div class="post-preview">
+                    <a href="{{ url_for('posts.post', post_id=post.id) }}">
+                        <h2 class="post-title">
+                            {{ post.title }}
+                        </h2>
+                    </a>
+                    <div class="media">
+                        <div class="media-body">
+                            Автор статьи:
+                            <a href="{{ url_for('users.user_posts', username=post.author.username) }}"
+                               style="color: violet;">
+                                {{ post.author.username }}
+                            </a>
+                        </div>
+                    </div>
+                    <p class="post-meta">
+                        Опубликовано
+                        {{ post.created.strftime('%d %B %Y %I:%M %p') }}
+                    </p>
+                </div>
+                <!-- Pager-->
+                <div class="d-flex justify-content-end mb-4">
+                    <a class="btn btn-primary text-uppercase"
+                       href="{{ url_for('posts.post', post_id=post.id) }}">
+                        Перейти к посту →
+                    </a>
+                </div>
+                <!-- Divider-->
+                <hr class="my-4" />
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<div class="container">
+    <div style="text-align: center;">
+        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if posts.page == page_num %}
+                    <a class="btn btn-success mb-4"
+                       href="{{ url_for('posts.allpost', page=page_num) }}">
+                        {{ page_num }}
+                    </a>
+                {% else %}
+                    <a class="btn btn-outline-success mb-4"
+                       href="{{ url_for('posts.allpost', page=page_num) }}">
+                        {{ page_num }}
+                    </a>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

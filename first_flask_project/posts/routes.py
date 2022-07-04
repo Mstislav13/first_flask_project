@@ -30,8 +30,8 @@ def new_post():
     """
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data,
-                    author=current_user)
+        post = Post(title=form.title.data, description=form.content.data,
+                    content=form.content.data, author=current_user)
         db.session.add(post)
         db.session.commit()
         flash('Ваш пост создан!', 'success')
@@ -65,12 +65,14 @@ def update_post(post_id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
+        post.description = form.content.data
         post.content = form.content.data
         db.session.commit()
         flash('Ваш пост обновлен!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
+        form.description.data = post.description
         form.content.data = post.content
     return render_template('update_post.html', form=form,
                            legend='Редактирование поста')

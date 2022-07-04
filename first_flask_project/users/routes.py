@@ -4,7 +4,7 @@ from first_flask_project import db, bcrypt
 from first_flask_project.models import User, Post
 from first_flask_project.users.forms import RegistrationForm, LoginForm, \
     UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from first_flask_project.users.utils import save_picture
+from first_flask_project.users.utils import save_picture, send_reset_email
 
 users = Blueprint('users', __name__)
 
@@ -111,3 +111,47 @@ def user_posts(username):
     posts = Post.query.filter_by(author=user).order_by(Post.created.desc())\
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
+
+
+@users.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    """
+    Запрос на изменение пароля
+    :return:
+    """
+    if current_user.is_authenticated:
+        return redirect(url_for('posts.allposts'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('На почту отправлено письмо с '
+              'инструкциями по сбросу пароля.', 'info')
+        return redirect(url_for('users.login'))
+    return render_template('reset_request.html',
+                           title='Сброс пароля', form=form)
+
+
+@users.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    """
+    Проверка токена и изменение пароля
+    :param token:
+    :return:
+    """
+    if current_user.is_authenticated:
+        return redirect(url_for('posts.allpost'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('Это недействительный или просроченный токен', 'warning')
+        return redirect(url_for('users.reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).\
+            decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Ваш пароль был обновлен! '
+              'Теперь вы можете авторизоваться', 'success')
+        return redirect(url_for('users.login'))
+    return render_template('reset_token.html', title='Сброс пароля', form=form)

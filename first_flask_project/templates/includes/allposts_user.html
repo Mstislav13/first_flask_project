@@ -14,7 +14,7 @@
                     </a>
                     <div class="media">
                         <div class="media-body">
-                            Автор статьи:
+                            Автор поста:
                             <a href="{{ url_for('users.user_posts', username=post.author.username) }}"
                                style="color: violet;">
                                 {{ post.author.username }}
@@ -25,6 +25,7 @@
                         Опубликовано
                         {{ post.created.strftime('%d %B %Y %I:%M %p') }}
                     </p>
+                    <p>Описание поста: {{ post.description }}</p>
                 </div>
                 <!-- Pager-->
                 <div class="d-flex justify-content-end mb-4">

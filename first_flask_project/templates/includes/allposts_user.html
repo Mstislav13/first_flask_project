@@ -15,8 +15,14 @@
                     <div class="media">
                         <div class="media-body">
                             Автор поста:
+                            <img class="rounded-circle account-img"
+                                     src="{{ url_for('static', filename='profile_pics/' + post.author.avatar_image) }}"
+                                     style="width: 6%;">
                             <a href="{{ url_for('users.user_posts', username=post.author.username) }}"
                                style="color: violet;">
+                                <img class="rounded-circle account-img"
+                                     src="{{ avatar_image }}"
+                                     style="width: 10%;">
                                 {{ post.author.username }}
                             </a>
                         </div>

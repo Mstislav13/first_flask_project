@@ -30,7 +30,7 @@ def new_post():
     """
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, description=form.content.data,
+        post = Post(title=form.title.data, description=form.description.data,
                     content=form.content.data, author=current_user)
         db.session.add(post)
         db.session.commit()
@@ -65,7 +65,7 @@ def update_post(post_id):
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
-        post.description = form.content.data
+        post.description = form.description.data
         post.content = form.content.data
         db.session.commit()
         flash('Ваш пост обновлен!', 'success')

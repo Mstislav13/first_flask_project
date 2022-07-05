@@ -36,10 +36,7 @@ def send_reset_email(user):
                   sender='flask-test-mail@yandex.ru',
                   recipients=[user.email])
     msg.body = f'''Чтобы сбросить пароль,
-     перейдите по следующей ссылке: {url_for('users.reset_token',
-                                             token=token,
+     перейдите по следующей ссылке: {url_for('users.reset_token', token=token,
                                              _external=True)}
-                                             . Если вы не делали этот запрос 
-                                             тогда просто проигнорируйте это 
-                                             письмо.'''
+     . Если вы не делали этот запрос тогда просто проигнорируйте это письмо.'''
     mail.send(msg)

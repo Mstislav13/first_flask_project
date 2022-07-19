@@ -1,0 +1,66 @@
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+
+                <legend class="border-bottom mb-4">{{ legend }}</legend>
+
+                <div class="my-5">
+
+                    <form id="contactForm" method="POST" action="">
+                        {{ form.hidden_tag() }}
+
+                        <div class="form-floating">
+                            {{ form.title.label(class="form-control-label") }}
+                            <br>
+                            {% if form.title.errors %}
+                                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.title.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.title(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-floating">
+                            {{ form.description.label(class="form-control-label") }}
+                            <br><br>
+                            {% if form.description.errors %}
+                                {{ form.description(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.description.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.description(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-floating">
+                            {{ form.content.label(class="form-control-label") }}
+                            <br><br>
+                            {% if form.content.errors %}
+                                {{ form.content(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.content.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.content(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-info") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,81 @@
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="my-5">
+
+                <form id="contactForm"
+                      method="POST"
+                      action="">
+
+                    {{ form.hidden_tag() }}
+
+                    <div class="form-floating">
+                        {{ form.email.label(class="form-control-label") }}
+                        <br>
+                        {% if form.email.errors %}
+                            {{ form.email(class="form-control form-control-lg is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+                            {{ form.email(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating">
+                        {{ form.password.label(class="form-control-label") }}
+                        <br>
+                        {% if form.password.errors %}
+                            {{ form.password(class="form-control form-control-lg is-invalid") }}
+
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+
+                        {% else %}
+                            {{ form.password(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-floating">
+                        <p class="text-muted ml-2">
+                            <a href="{{ url_for('users.reset_request') }}"
+                               style="color: #bc5656;">
+                                Забыли пароль?
+                            </a>
+                        </p>
+                    </div>
+
+                    <!-- Submit Button-->
+                    <div class="form-group">
+                        {{ form.remember(class="form-check-input") }}
+                        {{ form.remember.label(class="form-check-label") }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info sub_log") }}
+                    </div>
+                    <br>
+                    <small style="font-size: 20px; font-weight: 500;">
+                        Для авторизации:
+                        <a class="ml-2"
+                           href="{{ url_for('users.register') }}"
+                           style="color: blue">
+                            Зарегистрируйтесь
+                        </a>
+                    </small>
+
+                </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

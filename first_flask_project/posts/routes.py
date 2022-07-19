@@ -2,7 +2,7 @@ from flask import (render_template, url_for, flash, redirect, request, abort,
                    Blueprint)
 from flask_login import current_user, login_required
 from first_flask_project import db
-from first_flask_project.models import Post
+from first_flask_project.models import Post, Comments
 from first_flask_project.posts.forms import PostForm
 
 posts = Blueprint('posts', __name__)
@@ -40,7 +40,7 @@ def new_post():
                            title='Новый пост', form=form, legend='Новый пост')
 
 
-@posts.route("/post/<int:post_id>")
+@posts.route("/post/<int:post_id>", methods=['GET', 'POST'])
 def post(post_id):
     """
     Статья
@@ -48,7 +48,21 @@ def post(post_id):
     :return:
     """
     post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=post.title, post=post)
+    comment = Comments.query.filter_by(post_id=post.id).all()
+    if request.method == 'POST':
+        post_id = post.id
+        name = request.form.get('name')
+        email = request.form.get('email')
+        content = request.form.get('content')
+        comment = Comments(name=name, email=email, content=content,
+                           post_id=post_id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Ваш комментарий был создан.', 'success')
+        return redirect(request.url)
+
+    return render_template('post.html', title=post.title, post=post,
+                           comment=comment)
 
 
 @posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])

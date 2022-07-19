@@ -25,18 +25,78 @@
                      style="font-size: 20px; display: flex;">
                     {% if post.author == current_user %}
                         <a class="btn btn-success btn-sm mt-1 mb-1"
+                           style="border-radius: 5px;"
                            href="{{url_for('posts.update_post', post_id=post.id) }}">
                             Редактировать
                         </a>
                         <form action="{{ url_for('posts.delete_post', post_id=post.id) }}"
                               method="POST" style="margin-left: 430px;">
                         <input class="btn btn-danger btn-sm mt-1 mb-1"
+                               style="border-radius: 5px;"
                                type="submit" value="Удалить">
                         </form>
                     {% endif %}
                 </div>
 
             </div>
+
+            <div class="col-md-10 col-lg-8 col-xl-7"
+                 style="margin-top: 20px; border-bottom: 1px solid #0e0d0d;" >
+                <h4>Написать комментарий: </h4>
+                <form id="contactForm"
+                      method="POST"
+                      action="">
+
+                    <div class="form-floating">
+                        <label class="form-control-label">Ваше имя</label><br>
+                        <input type="text" name="name" class="form-control form-control-lg"
+                               id="name">
+                    </div>
+
+                    <div class="form-floating">
+                        <label class="form-control-label">Ваш email</label><br>
+                        <input type="text" name="email" class="form-control form-control-lg"
+                               id="email">
+                    </div>
+
+                    <div class="form-floating">
+                        <label class="form-control-label">Комментарий</label><br>
+                        <textarea class="form-control form-control-lg"
+                                  name="content"></textarea>
+                    </div>
+                    <br />
+                    <!-- Submit Button-->
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <button type="submit"
+                                class="btn btn-primary text-uppercase">
+                            Написать
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-md-10 col-lg-8 col-xl-7" style="margin-top: 30px;">
+                <h4>Комментарии: </h4>
+
+                {% for content in comment %}
+                    <div class="line">
+                        <small>
+                        Автор комментария:
+                        <a>
+                            {{ content.name }}
+                        </a>
+                        </small>
+                        <br>
+                        <small>
+                            Дата публикации: {{ content.created.strftime('%d %B %Y
+                            %I:%M %p') }}
+                        </small><br>
+                        <p style="margin: 0;">{{ content.content }}</p>
+                    </div><br>
+                {% endfor %}
+            </div>
+            <br>
         </div>
     </div>
 </article>

@@ -57,8 +57,10 @@ class Post(db.Model):
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     description = db.Column(db.Text, nullable=False)
     content = db.Column(db.Text, nullable=False)
-    comments = db.Column(db.Integer, default=0)
+    comments = db.relationship('Comment', backref='title', lazy='dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    image_file = db.Column(db.String(30), nullable=False,
+                           default='default.png')
 
     def __repr__(self):
         """
@@ -77,21 +79,20 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class Comments(db.Model):
+class Comment(db.Model):
     """
     класс - модель комментариев
     """
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=False, nullable=False)
-    email = db.Column(db.String(120), unique=False, nullable=False)
     content = db.Column(db.Text, nullable=False)
+    username = db.Column(db.String(50), db.ForeignKey('user.username'),
+                         nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id', ondelete='CASCADE'
                                                   ), nullable=False)
-    post = db.relationship('Post', backref=db.backref('post', lazy=True))
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         """
         :return:
         """
-        return f"Комментарий('{self.name}', '{self.content}')"
+        return f"Комментарий('{self.username}', '{self.content}')"

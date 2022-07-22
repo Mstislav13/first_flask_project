@@ -36,7 +36,7 @@ def new_post():
     if form.validate_on_submit():
         post = Post(title=form.title.data, description=form.description.data,
                     content=form.content.data, author=current_user,
-                    image_file=picture_name)
+                    image_file=None)
         db.session.add(post)
         db.session.commit()
         flash('Ваш пост создан!', 'success')

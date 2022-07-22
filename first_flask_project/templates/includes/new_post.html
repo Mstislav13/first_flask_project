@@ -58,8 +58,8 @@
                         {{ form.picture.label(style="margin: 10px 0px;") }}
 
                         <div class="form-floating">                            
-                            {{ form.picture(class="form-control-file") }}
-                           
+                            {{ form.picture(class="form-control-file") }}                           
+
                             {% if form.picture.errors %}
                                 <div class="invalid-feedback">
                                     {% for error in form.picture.errors %}

@@ -19,6 +19,14 @@
                 <small>
                     Дата публикации: {{ post.created.strftime('%d %B %Y %I:%M %p') }}
                 </small>
+
+                {% if post.image_file %}
+                    <div class="media-body">
+                        <img class=""
+                             src="{{ url_for('static', filename='posts_img/' + post.image_file) }}">
+                    </div>
+                {% endif %}
+
                 <p>{{ post.content }}</p>
 
                 <div class="card-footer"
@@ -43,28 +51,22 @@
             <div class="col-md-10 col-lg-8 col-xl-7"
                  style="margin-top: 20px; border-bottom: 1px solid #0e0d0d;" >
                 <h4>Написать комментарий: </h4>
-                <form id="contactForm"
-                      method="POST"
-                      action="">
-
-                    <div class="form-floating">
-                        <label class="form-control-label">Ваше имя</label><br>
-                        <input type="text" name="name" class="form-control form-control-lg"
-                               id="name">
-                    </div>
-
-                    <div class="form-floating">
-                        <label class="form-control-label">Ваш email</label><br>
-                        <input type="text" name="email" class="form-control form-control-lg"
-                               id="email">
-                    </div>
+                <form id="contactForm" method="POST" action="">
+                    {{ form.hidden_tag() }}
 
                     <div class="form-floating">
                         <label class="form-control-label">Комментарий</label>
                         <br>
-                        <br>
-                        <textarea class="form-control form-control-lg"
-                                  name="content"></textarea>
+                        {% if form.comment.errors %}
+                            {{ form.comment(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.comment.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.comment(class="form-control form-control-lg") }}
+                        {% endif %}
                     </div>
                     <br />
                     <!-- Submit Button-->
@@ -79,24 +81,39 @@
             </div>
 
             <div class="col-md-10 col-lg-8 col-xl-7" style="margin-top: 30px;">
-                <h4>Комментарии: </h4>
+                {% if post.comments %}
+                {% if post.comments.count() > 0 %}
+                    <h4>Комментарии ({{post.comments.count()}}) :</h4>
 
-                {% for content in comment %}
-                    <div class="line">
-                        <small>
-                        Автор комментария:
-                        <a>
-                            {{ content.name }}
-                        </a>
-                        </small>
-                        <br>
-                        <small>
-                            Дата публикации: {{ content.created.strftime('%d %B %Y
-                            %I:%M %p') }}
-                        </small><br>
-                        <p style="margin: 0;">{{ content.content }}</p>
-                    </div><br>
-                {% endfor %}
+                    {% for comment in post.comments | reverse %}
+                        <div class="line">
+                            <small>
+                            Автор комментария:
+                            <a>
+                                {{ comment.username }}
+                            </a>
+                            </small>
+                            <br>
+                            <small>
+                                Дата публикации: {{ comment.created.strftime('%d %B %Y %I:%M %p') }}
+                            </small><br>
+                            <p style="margin: 0;">{{ comment.content }}</p>
+                            {% if comment.username == current_user.username %}
+                            <div class="card-footer"
+                                 style="font-size: 20px; display: flex;">
+                                <form action="{{ url_for('posts.delete_comment', comment_id=comment.id) }}"
+                                      method="POST" style="margin-left: 430px;">
+                                <input class="btn btn-danger btn-sm mt-1 mb-1"
+                                       style="border-radius: 5px;"
+                                       type="submit" value="Удалить">
+                                </form>
+                            </div>
+                            {% endif %}
+                        </div><br>
+
+                    {% endfor %}
+                {% endif %}
+                {% endif %}
             </div>
             <br>
         </div>

@@ -66,7 +66,8 @@ class Post(db.Model):
         """
         :return:
         """
-        return f"Запись('{self.title}', '{self.created}')"
+        return f"Запись('{self.title}', '{self.created}'," \
+               f" '{self.image_file}')"
 
 
 @login_manager.user_loader

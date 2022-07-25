@@ -30,13 +30,13 @@ def new_post():
     :return:
     """
     form = PostForm()
-    if request.method == 'POST':
+    if form.validate_on_submit():
         if form.picture.data:
             picture_name = save_picture(form.picture.data)
-    if form.validate_on_submit():
+            image_file = picture_name
         post = Post(title=form.title.data, description=form.description.data,
                     content=form.content.data, author=current_user,
-                    image_file=None)
+                    image_file=image_file)
         db.session.add(post)
         db.session.commit()
         flash('Ваш пост создан!', 'success')
@@ -79,12 +79,12 @@ def update_post(post_id):
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
-        post.title = form.title.data
-        post.description = form.description.data
-        post.content = form.content.data
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             post.image_file = picture_file
+        post.title = form.title.data
+        post.description = form.description.data
+        post.content = form.content.data
         db.session.commit()
         flash('Ваш пост обновлен!', 'success')
         return redirect(url_for('posts.post', post_id=post.id))
@@ -92,8 +92,8 @@ def update_post(post_id):
         form.title.data = post.title
         form.description.data = post.description
         form.content.data = post.content
-        image_file = url_for('static', filename='posts_img/' +
-                                                post.image_file)
+    image_file = url_for('static', filename='posts_img/' +
+                                            post.image_file)
     return render_template('update_post.html', form=form,
                            image_file=image_file,
                            legend='Редактирование поста')

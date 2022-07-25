@@ -1,7 +1,7 @@
 import os
 from secrets import token_hex
 from PIL import Image
-from flask import url_for, current_app
+from flask import current_app
 
 
 def save_picture(form_picture):
